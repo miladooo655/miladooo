@@ -1,0 +1,85 @@
+#include <windows.h>
+#include <GL/gl.h>
+#include <GL/glut.h>
+
+static float milad1 = 0, moudar = 0, milad3 = 0;
+
+void canvasInit(void){
+    glClearColor(0.0,0.1,0.0,0.0);
+
+}
+
+void reshape(int w,int h){
+    glViewport(0,0,(GLsizei) w, (GLsizei) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(65.0,1.0,1.0,20.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0.7,-0.7,-5.0);
+    gluLookAt(1,1,1,-1,-1,-1,0,1,0);
+}
+
+void display(void){
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPushMatrix();
+    glColor3f(1.0,0.0,0.0);
+    glTranslatef((milad1),(moudar),(milad3));
+    glScalef(0.5,0.5,0.5);
+    glutSolidCube(1.0);
+    glPopMatrix();
+        glPushMatrix();
+        glColor3f(1.0,1.0,1.0);
+        glScalef(2.5,2.5,2.5);
+        glutWireCube(1.0);
+        glPopMatrix();
+    glPopMatrix();
+    glutSwapBuffers();
+
+}
+
+void keyboard(unsigned char key,int x,int y){
+    switch (key){
+    case 'a':
+        if(milad1>-1)
+        milad1-=0.1;
+        break;
+    case 'd':
+        if(milad1<1)
+        milad1+=0.1;
+        break;
+    case 's':
+        if(moudar>-1)
+        moudar-=0.1;
+        break;
+    case 'w':
+        if(moudar<1)
+        moudar+=0.1;
+        break;
+    case 'e':
+        if(milad3>-1)
+        milad3-=0.1;
+        break;
+    case 'q':
+        if(milad3<1)
+        milad3+=0.1;
+        break;
+    default : break;
+    }
+    glutPostRedisplay();
+}
+
+int main(int argc , char** argv){
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
+    glutInitWindowSize(250,250);
+    glutInitWindowPosition(100,100);
+    glutCreateWindow("milad");
+    canvasInit();
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
+    glutMainLoop();
+    return 0;
+
+}
+
